@@ -1,0 +1,50 @@
+/* =========================================================
+   TILT 3D + GLARE — tabs de proyectos
+   El tilt (rotación) lo controla js/tilt.js con transform
+   inline en cada mousemove. Aquí solo definimos el "brillo"
+   que sigue al cursor, usando variables CSS que el JS
+   actualiza en tiempo real (--glare-x, --glare-y).
+   ========================================================= */
+
+.proyecto-tab {
+  --glare-x: 50%;
+  --glare-y: 50%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.proyecto-tab::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle at var(--glare-x) var(--glare-y),
+    rgba(255, 255, 255, 0.55),
+    rgba(0, 217, 200, 0.25) 35%,
+    transparent 60%
+  );
+  transition: opacity 0.2s ease;
+  mix-blend-mode: overlay;
+}
+
+.proyecto-tab:hover::after {
+  opacity: 1;
+}
+
+/* Borde con leve resplandor animado mientras se inclina */
+.proyecto-tab:hover {
+  border-color: var(--acento-claro, var(--acento));
+}
+
+/* Ligero relieve en el overlay de texto para reforzar la sensación de profundidad */
+.proyecto-tab .tab-overlay {
+  transform: translateZ(18px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proyecto-tab { transform: none !important; }
+  .proyecto-tab::after { display: none; }
+}

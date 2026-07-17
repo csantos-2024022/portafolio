@@ -1,0 +1,220 @@
+/* =========================================================
+   INTRO CINEMÁTICA — "BOOT DEL PORTAFOLIO"
+   Concepto propio: en vez de una animación decorativa,
+   simulamos que el portafolio se está "compilando y
+   desplegando" en vivo, como una terminal real. Conecta
+   directo con la frase de identidad del sitio:
+   "código limpio, datos claros".
+   ========================================================= */
+
+.loader-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: radial-gradient(circle at 50% 40%, #121821 0%, #05070a 75%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
+  clip-path: circle(150% at 50% 50%);
+  transition: clip-path 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.loader-intro.cerrando {
+  clip-path: circle(0% at 50% 50%);
+}
+
+.loader-intro.oculto {
+  display: none;
+}
+
+/* Evita scroll del contenido real mientras la intro corre */
+body.intro-activa {
+  overflow: hidden;
+}
+
+.loader-terminal {
+  width: min(92vw, 560px);
+  background: var(--bg-secundario, #161b22);
+  border: 1px solid var(--acento, #00d9c8);
+  border-radius: var(--radio-lg, 18px);
+  box-shadow: 0 0 0 1px rgba(0, 217, 200, 0.08), 0 30px 80px -20px rgba(0, 217, 200, 0.25),
+    0 0 60px -10px rgba(0, 217, 200, 0.15);
+  overflow: hidden;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  animation: terminalAparecer 0.6s ease both;
+}
+
+@keyframes terminalAparecer {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.loader-terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  background: var(--bg-terciario, #1f2530);
+  border-bottom: 1px solid var(--borde, #2a313c);
+}
+
+.loader-terminal-bar .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-red    { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green  { background: #27c93f; }
+
+.loader-terminal-titulo {
+  margin-left: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--texto-secundario, #8b949e);
+}
+
+.loader-terminal-body {
+  padding: 1.25rem 1.4rem;
+  min-height: 190px;
+  font-size: 0.85rem;
+  line-height: 1.9;
+  color: #c9d1d9;
+}
+
+.loader-linea {
+  white-space: pre-wrap;
+  opacity: 0;
+  animation: lineaAparecer 0.25s ease forwards;
+}
+
+@keyframes lineaAparecer {
+  from { opacity: 0; transform: translateX(-4px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.loader-linea .prompt {
+  color: var(--acento, #00d9c8);
+  margin-right: 0.5rem;
+}
+
+.loader-linea .ok {
+  color: #3fb950;
+}
+
+.loader-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 1em;
+  background: var(--acento, #00d9c8);
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  animation: parpadeoCursor 0.9s steps(1) infinite;
+}
+
+@keyframes parpadeoCursor {
+  50% { opacity: 0; }
+}
+
+.loader-barra-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 1.4rem 1.25rem;
+}
+
+.loader-barra {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--bg-terciario, #1f2530);
+  overflow: hidden;
+}
+
+.loader-barra-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--acento, #00d9c8), var(--acento-claro, #4de8dc));
+  box-shadow: 0 0 12px var(--acento, #00d9c8);
+  transition: width 0.25s ease;
+}
+
+.loader-porcentaje {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.78rem;
+  color: var(--texto-secundario, #8b949e);
+  min-width: 3ch;
+  text-align: right;
+}
+
+.loader-skip {
+  background: transparent;
+  border: 1px solid var(--borde, #2a313c);
+  color: var(--texto-secundario, #8b949e);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radio-sm, 6px);
+  font-family: var(--fuente, sans-serif);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.loader-skip:hover {
+  color: var(--acento, #00d9c8);
+  border-color: var(--acento, #00d9c8);
+}
+
+@media (max-width: 560px) {
+  .loader-terminal-body { min-height: 220px; font-size: 0.78rem; }
+}
+
+/* Respeta a usuarios que piden menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .loader-intro { transition: none; }
+  .loader-linea { animation: none; opacity: 1; }
+}
+
+/* =========================================================
+   CURSOR PERSONALIZADO MAGNÉTICO
+   Solo se activa en dispositivos con puntero fino (mouse),
+   nunca en touch, para no estorbar en móvil.
+   ========================================================= */
+.cursor-punto,
+.cursor-anillo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 999998;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.cursor-punto {
+  width: 6px;
+  height: 6px;
+  background: var(--acento, #00d9c8);
+}
+
+.cursor-anillo {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--acento, #00d9c8);
+  opacity: 0.6;
+  transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.cursor-anillo.cursor-hover {
+  width: 52px;
+  height: 52px;
+  opacity: 0.9;
+  background: rgba(0, 217, 200, 0.08);
+}
+
+body.cursor-activo, body.cursor-activo * {
+  cursor: none !important;
+}

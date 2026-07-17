@@ -1,0 +1,47 @@
+/* =========================================================
+   BORDE DE AGUA DEL SIDEBAR
+   Reemplaza el borde recto por una línea fina que se
+   distorsiona de forma orgánica y muy lenta usando un filtro
+   SVG (feTurbulence + feDisplacementMap animado). No es una
+   "ola" literal — es un temblor sutil, como si el borde
+   fuera líquido. Cero JavaScript, todo animado por SMIL.
+   ========================================================= */
+
+.sidebar-linea-agua {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 6px;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.linea-agua-trazo {
+  fill: none;
+  stroke: var(--acento);
+  stroke-width: 1.6;
+  opacity: 0.55;
+  filter: url(#filtroLineaAgua) drop-shadow(0 0 6px var(--acento));
+  vector-effect: non-scaling-stroke;
+}
+
+/* En modo colapsado el sidebar es más angosto, el borde se ve igual de bien */
+.sidebar.colapsado .sidebar-linea-agua {
+  right: -3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .linea-agua-trazo {
+    filter: none;
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 768px) {
+  /* En móvil el sidebar se desliza como panel lateral; el borde de agua sigue funcionando ahí también */
+  .sidebar-linea-agua {
+    display: block;
+  }
+}

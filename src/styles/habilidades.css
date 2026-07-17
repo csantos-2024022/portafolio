@@ -1,0 +1,204 @@
+/* =========================================================
+   HABILIDADES — tarjetas categorizadas
+   ========================================================= */
+
+.habilidades-contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  margin-top: 1rem;
+}
+
+.categoria-titulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--texto-primario);
+  margin-bottom: 0.9rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--acento);
+}
+
+.grid-skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.tarjeta-skill {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01) 60%), var(--bg-secundario-glass);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radio-md);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 4px 12px -8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tarjeta-skill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(220px circle at var(--brillo-x, 20%) var(--brillo-y, 0%), rgba(255, 255, 255, 0.16), transparent 65%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tarjeta-skill:hover::before {
+  opacity: 1;
+}
+
+.tarjeta-skill:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 217, 200, 0.5);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    0 12px 28px -16px rgba(0, 217, 200, 0.4);
+}
+
+/* Fallback si el navegador no soporta backdrop-filter */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .tarjeta-skill {
+    background: var(--bg-secundario);
+  }
+}
+
+.skill-icono {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  object-fit: contain;
+  margin-top: 0.15rem;
+}
+
+.skill-icono-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  width: 32px;
+  height: 32px;
+  background-color: var(--bg-terciario);
+  border-radius: var(--radio-sm);
+}
+
+.skill-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0; /* permite que el texto largo no rompa el grid */
+}
+
+.skill-nombre {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--texto-primario);
+}
+
+.skill-nivel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nivel-barras {
+  display: flex;
+  gap: 3px;
+}
+
+.nivel-barra {
+  width: 16px;
+  height: 5px;
+  border-radius: 3px;
+  background-color: var(--bg-terciario);
+}
+
+.nivel-barra.llena {
+  background-color: var(--acento);
+}
+
+.nivel-texto {
+  font-size: 0.72rem;
+  color: var(--texto-secundario);
+}
+
+.skill-proyecto {
+  font-size: 0.72rem;
+  color: var(--texto-secundario);
+}
+
+.skill-proyecto strong {
+  color: var(--acento);
+  font-weight: 600;
+}
+
+/* Ícono monocromático (ej. GitHub) que necesita invertirse para verse en modo oscuro */
+html:not([data-tema='claro']) .skill-icono-invertible {
+  filter: invert(1) brightness(1.4);
+}
+
+/* ---- Tags relacionados (herramientas o prácticas junto a una categoría) ---- */
+.tags-relacionados {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.85rem;
+}
+
+.tag-relacionado {
+  padding: 0.4rem 0.85rem;
+  background-color: var(--bg-terciario);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--texto-secundario);
+}
+
+/* ---- Bloque "Actualmente aprendiendo" ---- */
+.bloque-aprendiendo {
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--borde);
+}
+
+.parrafo-aprendiendo {
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+  margin-bottom: 1rem;
+  max-width: 60ch;
+}
+
+.grid-aprendiendo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.chip-aprendiendo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1rem;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01) 60%), var(--bg-terciario);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  border: 1px dashed var(--acento);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--texto-primario);
+}
+
+@media (max-width: 500px) {
+  .grid-skills {
+    grid-template-columns: 1fr;
+  }
+}

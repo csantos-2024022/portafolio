@@ -1,0 +1,1551 @@
+/* =========================================================
+   VARIABLES DE COLOR (paleta dark mode)
+   Usamos "custom properties" de CSS para no repetir colores
+   en hexadecimal por todo el archivo. Si luego queremos cambiar
+   el tono de acento, solo lo cambiamos AQUÍ una vez.
+   ========================================================= */
+:root {
+  --bg-primario: #0D1117;      /* fondo general de la página */
+  --bg-secundario: #161B22;    /* fondo del sidebar y tarjetas */
+  --bg-secundario-glass: rgba(15, 35, 38, 0.15);
+ /* misma tonalidad, translúcida, para el sidebar de vidrio */
+  --bg-terciario: #1F2530;     /* fondo de inputs, hover sutil */
+
+  --acento: #00D9C8;           /* cian - color principal de marca */
+  --acento-claro: #4DE8DC;     /* cian claro - hover / estados activos */
+
+  --texto-primario: #F5F5F5;   /* texto principal (casi blanco) */
+  --texto-secundario: #8B949E; /* texto secundario (gris) */
+
+  --borde: #2A313C;            /* bordes sutiles */
+
+  --fuente: 'Inter', -apple-system, sans-serif;
+
+  --radio-sm: 6px;
+  --radio-md: 12px;
+  --radio-lg: 18px;
+
+  --transicion: 0.25s ease;
+}
+
+/* =========================================================
+   MODO CLARO
+   Se activa cuando el <html> tiene el atributo data-tema="claro"
+   (lo pone el JavaScript al tocar el botón de sol/luna).
+   Redefinimos las MISMAS variables con otros valores — como
+   todo el sitio ya usa var(--algo), no hace falta tocar nada
+   más, todo el diseño se adapta automáticamente.
+   ========================================================= */
+html[data-tema='claro'] {
+  --bg-primario: #F7F8FA;
+  --bg-secundario: #FFFFFF;
+  --bg-secundario-glass: rgba(255, 255, 255, 0.72);
+  --bg-terciario: #EDEFF2;
+
+  --acento: #00A99A;        /* mismo cian pero un poco más oscuro, mejor contraste sobre blanco */
+  --acento-claro: #00C2B0;
+
+  --texto-primario: #14181F;
+  --texto-secundario: #3D4450;
+
+  --borde: #DFE2E7;
+}
+
+/* Transición suave de colores al cambiar de tema */
+body, .sidebar, .contenido, .tarjeta-proyecto, .tarjeta-timeline,
+.grafica-contenedor, .tarjeta-contador, .nav-link, .form-contacto input,
+.form-contacto textarea, .red-link {
+  transition: background-color var(--transicion), color var(--transicion), border-color var(--transicion);
+}
+
+/* =========================================================
+   RESET BÁSICO
+   Los navegadores traen márgenes/paddings por default que
+   varían entre ellos. Los ponemos en 0 para tener control
+   total y que se vea igual en todos lados.
+   ========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* el padding y el borde no agrandan el elemento */
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--fuente);
+  background-color: var(--bg-primario);
+  background-image: radial-gradient(circle, rgba(0, 217, 200, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--texto-primario);
+  line-height: 1.6;
+  position: relative;
+}
+
+/* =========================================================
+   FONDO ANIMADO "AURORA"
+   Tres manchas de color muy difusas y tenues que flotan
+   despacio. Va en una capa detrás de todo (z-index: -1) y
+   no recibe clicks (pointer-events: none).
+   ========================================================= */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aurora::before,
+.aurora::after {
+  content: '';
+  position: absolute;
+  width: 42vw;
+  height: 42vw;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.11;
+}
+
+.aurora::before {
+  background: var(--acento);
+  top: -10%;
+  left: -5%;
+  animation: flotar1 22s ease-in-out infinite;
+}
+
+.aurora::after {
+  background: #3B82F6; /* un azul que combina con el cian sin competir */
+  bottom: -15%;
+  right: -5%;
+  animation: flotar2 26s ease-in-out infinite;
+}
+
+@keyframes flotar1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6vw, 8vh) scale(1.15); }
+}
+
+@keyframes flotar2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-7vw, -6vh) scale(1.1); }
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* =========================================================
+   LAYOUT PRINCIPAL
+   El body se divide en dos columnas: sidebar (fija) + contenido
+   (con scroll propio). Usamos Flexbox para acomodarlas.
+   ========================================================= */
+body {
+  display: flex;
+  overflow: hidden; /* evita doble scroll en toda la página */
+  position: relative;
+}
+
+/* Capa de fondo "aurora": dos manchas de luz cian que flotan despacio */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none; /* no bloquea clicks en el contenido */
+}
+
+.aurora::before,
+.aurora::after {
+  content: '';
+  position: absolute;
+  width: 42vw;
+  height: 42vw;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.11;
+}
+
+.aurora::before {
+  top: -10%;
+  left: 10%;
+  background: var(--acento);
+  animation: flotar1 18s ease-in-out infinite;
+}
+
+.aurora::after {
+  bottom: -15%;
+  right: 5%;
+  background: var(--acento-claro);
+  animation: flotar2 22s ease-in-out infinite;
+}
+
+/* Mancha extra, de un color cálido (rosa/violeta), posicionada
+   detrás del sidebar. El vidrio necesita DOS colores distintos
+   para que se note que está mezclando/refractando algo — un
+   solo tono de cian sobre cian casi no se percibe. */
+
+
+@keyframes flotarTerciaria {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5vw, 8vh) scale(1.25); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-terciaria { animation: none; }
+}
+
+@keyframes flotar1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(8vw, 6vh); }
+}
+
+@keyframes flotar2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-6vw, -8vh); }
+}
+
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  width: 280px;
+  min-width: 280px; /* no se encoge aunque falte espacio */
+  height: calc(100vh - 2rem);
+  margin: 1rem 0 1rem 1rem;
+  border-radius: var(--radio-lg);
+  background-color: var(--bg-secundario-glass);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--borde);
+  box-shadow: 0 20px 45px -20px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 217, 200, 0.04);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative; /* para ubicar el botón de colapsar */
+  transition: width var(--transicion), min-width var(--transicion), padding var(--transicion), box-shadow var(--transicion);
+}
+
+.sidebar:hover {
+  box-shadow: 0 24px 55px -18px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 217, 200, 0.1);
+}
+
+/* Si el navegador no soporta backdrop-filter, que caiga a un fondo sólido normal (nada roto) */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sidebar {
+    background-color: var(--bg-secundario);
+  }
+}
+
+/* ---- MODO COLAPSADO (solo escritorio, el usuario lo activa) ---- */
+.sidebar.colapsado {
+  width: 84px;
+  min-width: 84px;
+  padding: 2rem 0.8rem;
+}
+
+/* Textos que se ocultan cuando el sidebar está colapsado */
+.sidebar.colapsado .sidebar-nombre,
+.sidebar.colapsado .nav-link span.texto-link {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sidebar.colapsado .sidebar-foto {
+  width: 44px;
+  height: 44px;
+}
+
+.sidebar.colapsado .monograma {
+  font-size: 0.95rem;
+}
+
+.sidebar.colapsado .nav-link {
+  justify-content: center;
+}
+
+/* Botón circular para colapsar/expandir, estilo "Claude" */
+.boton-colapsar {
+  position: absolute;
+  top: 2.5rem;
+  right: -14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--bg-terciario);
+  border: 1px solid var(--borde);
+  color: var(--texto-secundario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: transform var(--transicion), background-color var(--transicion), color var(--transicion);
+}
+
+.boton-colapsar:hover {
+  background-color: var(--acento);
+  color: #04342C;
+}
+
+.sidebar.colapsado .boton-colapsar {
+  transform: rotate(180deg);
+}
+
+/* ---- BARRA DE UTILIDADES (tema / sonido / idioma), abajo del todo ---- */
+.sidebar-utilidades {
+  margin-top: auto; /* la empuja al fondo del sidebar, después del nav */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--borde);
+}
+
+.boton-tema,
+.boton-sonido,
+.boton-idioma {
+  background-color: var(--bg-terciario);
+  border: 1px solid var(--borde);
+  color: var(--texto-primario);
+}
+
+.boton-tema,
+.boton-sonido {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease, background-color var(--transicion);
+}
+
+.boton-tema:hover {
+  background-color: var(--acento);
+  transform: rotate(20deg);
+}
+
+.boton-sonido:hover {
+  background-color: var(--acento);
+}
+
+.boton-idioma {
+  height: 34px;
+  padding: 0 0.7rem;
+  border-radius: var(--radio-md);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  flex: 1; /* ocupa el espacio restante de la fila */
+  white-space: nowrap;
+  overflow: hidden;
+  transition: background-color var(--transicion), color var(--transicion);
+}
+
+.boton-idioma:hover {
+  background-color: var(--acento);
+  color: #04342C;
+}
+
+/* En modo colapsado la barra se hace vertical y todo queda icon-only */
+.sidebar.colapsado .sidebar-utilidades {
+  flex-direction: column;
+}
+
+.sidebar.colapsado .boton-idioma {
+  width: 34px;
+  min-width: 34px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+
+.contenido {
+  flex: 1;           /* ocupa todo el espacio restante */
+  height: 100vh;
+  overflow-y: auto;  /* aquí va el scroll, no en toda la página */
+  padding: 3rem 4rem;
+  position: relative; /* para ubicar la cortina respecto a este panel */
+}
+
+/* =========================================================
+   CORTINA DE TRANSICIÓN
+   Una franja de color que "barre" rápidamente sobre el
+   contenido al cambiar de sección. El JS le agrega la clase
+   ".activa", que dispara la animación, y luego la quita.
+   ========================================================= */
+.cortina {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-secundario);
+  z-index: 20;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.cortina.activa {
+  animation: barridoCortina 0.5s ease;
+}
+
+@keyframes barridoCortina {
+  0%   { transform: scaleX(0);  transform-origin: left; opacity: 0.9; }
+  50%  { transform: scaleX(1);  transform-origin: left; }
+  50.01% { transform-origin: right; }
+  100% { transform: scaleX(0);  transform-origin: right; opacity: 0.9; }
+}
+
+/* =========================================================
+   MODO "CÓDIGO FUENTE"
+   Un botón flotante </> que abre un overlay de pantalla
+   completa simulando un editor de código, con las líneas
+   apareciendo una por una (como si se "tipearan" rápido).
+   ========================================================= */
+.boton-codigo-fuente {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--bg-secundario);
+  border: 1px solid var(--borde);
+  color: var(--acento);
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radio-md);
+  transition: background-color var(--transicion), transform var(--transicion);
+}
+
+.boton-codigo-fuente:hover {
+  background-color: var(--acento);
+  color: #04342C;
+  transform: scale(1.05);
+}
+
+.overlay-codigo {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(5, 7, 10, 0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay-codigo.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.bloque-codigo {
+  max-width: 640px;
+  width: 100%;
+  background-color: #0A0E14;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-lg);
+  padding: 2rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.9;
+  color: #C5CCD6;
+  overflow-x: auto;
+  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.7);
+}
+
+/* "Syntax highlighting" simulado con clases manuales */
+.cf-keyword { color: #D85A30; }
+.cf-var     { color: #85B7EB; }
+.cf-prop    { color: #97C459; }
+.cf-string  { color: #EF9F27; }
+.cf-func    { color: #ED93B1; }
+.cf-comment { color: #5F5E5A; font-style: italic; }
+
+/* Cada línea del bloque de código aparece una tras otra
+   (el JS divide el texto en líneas y les agrega .revelar-linea) */
+.bloque-codigo .revelar-linea {
+  display: inline-block;
+  width: 100%;
+  opacity: 0;
+  animation: aparecerLinea 0.35s ease forwards;
+}
+
+@keyframes aparecerLinea {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.cerrar-codigo {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--bg-secundario);
+  border: 1px solid var(--borde);
+  color: var(--texto-primario);
+  font-size: 1rem;
+  transition: background-color var(--transicion);
+}
+
+.cerrar-codigo:hover {
+  background-color: var(--acento);
+  color: #04342C;
+}
+
+
+
+/* =========================================================
+   SIDEBAR — PERFIL (foto + nombre)
+   ========================================================= */
+.sidebar-perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.sidebar-foto {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;        /* círculo perfecto */
+  background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.25), rgba(0,217,200,0.12) 45%, rgba(22,27,34,0.6) 100%);
+  border: 2px solid var(--acento);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  transition: width var(--transicion), height var(--transicion);
+  animation: brilloFoto 3.5s ease-in-out infinite;
+}
+
+/* Reflejo de luz tipo burbuja, arriba a la izquierda */
+.sidebar-foto::before {
+  content: '';
+  position: absolute;
+  top: 12%;
+  left: 18%;
+  width: 35%;
+  height: 22%;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  filter: blur(4px);
+  transform: rotate(-20deg);
+  pointer-events: none;
+}
+.sidebar-foto .monograma {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--acento);
+}
+
+/* Si en el futuro se agrega una <img> real dentro de .sidebar-foto */
+.sidebar-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes brilloFoto {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(0, 217, 200, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(0, 217, 200, 0);
+  }
+}
+
+
+.sidebar-nombre {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--texto-primario);
+}
+
+.sidebar-nombre span {
+  color: var(--acento); /* el apellido resaltado en cian */
+}
+
+/* =========================================================
+   SIDEBAR — MENÚ DE NAVEGACIÓN
+   ========================================================= */
+.sidebar-nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radio-md);
+  color: var(--texto-secundario);
+  font-size: 0.95rem;
+  font-weight: 500;
+  position: relative; /* necesario para que el ::before se ubique respecto a este link */
+  transition: background-color var(--transicion), color var(--transicion), padding-left var(--transicion);
+}
+
+/* Barrita lateral que solo aparece cuando el link está activo */
+.nav-link::before {
+  content: '';
+  position: absolute;
+  left: -1.5rem; /* arranca fuera del sidebar, alineada al borde real */
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 4px;
+  height: 60%;
+  background-color: var(--acento-claro);
+  border-radius: 0 4px 4px 0;
+  transition: transform var(--transicion);
+}
+
+.nav-link.activo::before {
+  transform: translateY(-50%) scaleY(1);
+}
+
+.nav-link .icon {
+  font-size: 1.1rem;
+  font-style: normal; /* quita la cursiva que <i> trae por default */
+  transition: transform var(--transicion);
+}
+
+.nav-link:hover {
+  background-color: var(--bg-terciario);
+  color: var(--texto-primario);
+  padding-left: 1.25rem; /* se "empuja" levemente hacia la derecha */
+}
+
+.nav-link:hover .icon {
+  transform: scale(1.15);
+}
+
+.nav-link.activo {
+  color: #04342C;
+}
+
+/* =========================================================
+   SECCIONES — sistema de mostrar/ocultar
+   Solo la sección con clase ".activa" se muestra.
+   El JavaScript (Fase 4) será quien mueva esta clase entre
+   secciones cuando el usuario haga click en el menú.
+   ========================================================= */
+.seccion {
+  display: none;
+}
+
+.seccion.activa {
+  display: block;
+}
+
+/* =========================================================
+   ANIMACIÓN EN CASCADA — clase .revelar
+   El JavaScript se la pone a cada hijo de la sección activa,
+   con un animation-delay creciente, creando el efecto de
+   "aparecen uno tras otro" en vez de todos de golpe.
+   ========================================================= */
+.revelar {
+  animation: revelarContenido 0.5s ease both;
+}
+
+@keyframes revelarContenido {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   TEXTOS GENERALES DE LAS SECCIONES
+   ========================================================= */
+.saludo {
+  color: var(--acento);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.titulo-grande {
+  font-size: 2.1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+
+/* Efecto "escribiéndose": el texto se revela de izquierda a
+   derecha con clip-path, y un cursor "|" parpadea al final */
+#tituloTyping.typing-en-progreso {
+  display: inline-block;
+  clip-path: inset(0 100% 0 0); /* arranca totalmente recortado (invisible) */
+  animation: escribirTexto 1.6s steps(28) forwards;
+  border-right: 3px solid var(--acento);
+  white-space: normal;
+}
+
+#tituloTyping.typing-listo {
+  border-right: 3px solid var(--acento);
+  animation: parpadearCursor 0.9s step-end infinite;
+}
+
+@keyframes escribirTexto {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes parpadearCursor {
+  0%, 100% { border-color: var(--acento); }
+  50% { border-color: transparent; }
+}
+
+
+.resaltado {
+  color: var(--acento);
+}
+
+.frase-identidad {
+  font-style: italic;
+  color: var(--texto-secundario);
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+}
+
+.subtitulo {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 2rem 0 1rem;
+}
+
+.parrafo {
+  color: var(--texto-secundario);
+  max-width: 700px; /* evita líneas demasiado largas, mejora lectura */
+  margin-bottom: 1rem;
+}
+
+.divisor {
+  border: none;
+  border-top: 1px solid var(--borde);
+  margin: 1.5rem 0;
+}
+
+.contacto-rapido {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.boton-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-secundario);
+  border: 1px solid var(--acento);
+  color: var(--acento);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radio-md);
+  margin-bottom: 1rem;
+  transition: background-color var(--transicion), color var(--transicion);
+}
+
+.boton-cv:hover {
+  background-color: var(--acento);
+  color: #04342C;
+}
+
+
+.lista-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  color: var(--texto-secundario);
+}
+
+.lista-datos strong {
+  color: var(--texto-primario);
+}
+
+/* =========================================================
+   CONTADOR DE DÍAS (widget tipo "stat card")
+   ========================================================= */
+.tarjeta-contador {
+  display: inline-flex;
+  flex-direction: column;
+  background-color: var(--bg-secundario);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-lg);
+  padding: 1.25rem 2rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+}
+
+.contador-numero {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--acento);
+  line-height: 1;
+}
+
+.contador-texto {
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+  margin-top: 0.3rem;
+}
+
+
+/* =========================================================
+   EDUCACIÓN — tarjeta timeline
+   ========================================================= */
+.tarjeta-timeline {
+  background-color: var(--bg-secundario);
+  border: 1px solid var(--borde);
+  border-left: 3px solid var(--acento); /* línea de acento estilo timeline */
+  border-radius: var(--radio-md);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 700px;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  transition: box-shadow var(--transicion), transform var(--transicion);
+}
+
+.tarjeta-timeline:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -8px rgba(0, 217, 200, 0.15);
+}
+
+.timeline-fecha {
+  display: inline-block;
+  background-color: var(--bg-terciario);
+  color: var(--acento);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radio-sm);
+  margin-bottom: 0.75rem;
+}
+
+.timeline-titulo {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.timeline-lugar {
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+/* =========================================================
+   HABILIDADES — contenedor de la gráfica
+   ========================================================= */
+.grafica-contenedor {
+  background-color: var(--bg-secundario);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-lg);
+  padding: 2rem;
+  max-width: 700px;
+  height: 520px; /* alto fijo para que Chart.js sepa cuánto espacio tiene */
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================================================
+   PROYECTOS — grid de tarjetas
+   CSS Grid acomoda las tarjetas en columnas automáticamente:
+   tantas columnas de mínimo 280px como quepan en el ancho
+   disponible. En pantallas angostas, cae solo a 1 columna.
+   ========================================================= */
+.grid-proyectos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  perspective: 1200px;
+}
+
+.tarjeta-proyecto {
+  background: rgba(22, 27, 34, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 217, 200, 0.18);
+  border-radius: var(--radio-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: box-shadow var(--transicion), border-color var(--transicion);
+  /* SIN overflow: hidden aquí */
+}
+
+.tarjeta-proyecto:hover {
+  border-color: var(--acento);
+  box-shadow: 0 16px 32px -8px rgba(0, 217, 200, 0.2);
+}
+
+/* La imagen sí necesita el recorte */
+.proyecto-img-wrapper {
+  border-radius: var(--radio-lg) var(--radio-lg) 0 0;
+  overflow: hidden;
+}
+
+.proyecto-img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+.proyecto-video {
+  width: 100%;
+  max-height: 420px;
+  display: block;
+  margin-top: 0.75rem;
+  border-radius: var(--radio-md);
+  background-color: #000;
+}
+
+.proyecto-info {
+  padding: 1.25rem;
+}
+
+.proyecto-titulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.proyecto-descripcion {
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.proyecto-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.proyecto-tags li {
+  background-color: var(--bg-terciario);
+  color: var(--acento);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radio-sm);
+}
+
+.boton-proyecto {
+  display: inline-block;
+  background-color: var(--acento);
+  color: #04342C;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radio-sm);
+  transition: background-color var(--transicion);
+}
+
+.boton-proyecto:hover {
+  background-color: var(--acento-claro);
+}
+
+/* =========================================================
+   CONTACTO — formulario
+   ========================================================= */
+.form-contacto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 500px;
+  margin-bottom: 2rem;
+}
+
+.form-contacto label {
+  font-size: 0.85rem;
+  color: var(--texto-secundario);
+  margin-top: 0.75rem;
+}
+
+.form-contacto input,
+.form-contacto textarea {
+  background-color: var(--bg-secundario);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
+  padding: 0.75rem 1rem;
+  color: var(--texto-primario);
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical; /* solo deja agrandar el textarea hacia abajo */
+}
+
+.form-contacto input:focus,
+.form-contacto textarea:focus {
+  outline: none;
+  border-color: var(--acento); /* resalta el campo activo */
+}
+
+.boton-enviar {
+  background-color: var(--acento);
+  color: #04342C;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.85rem;
+  border-radius: var(--radio-sm);
+  margin-top: 1.25rem;
+  transition: background-color var(--transicion);
+}
+
+.boton-enviar:hover {
+  background-color: var(--acento-claro);
+}
+
+.form-estado {
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  min-height: 1.2rem; /* reserva espacio para que no "salte" el layout */
+}
+
+/* =========================================================
+   CONTACTO — links de redes
+   ========================================================= */
+.redes-contacto {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.red-link {
+  background-color: var(--bg-secundario);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-md);
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color var(--transicion), color var(--transicion);
+}
+
+.red-link:hover {
+  border-color: var(--acento);
+  color: var(--acento);
+}
+
+/* =========================================================
+   BOTÓN HAMBURGUESA (solo visible en pantallas pequeñas)
+   ========================================================= */
+.boton-hamburguesa {
+  display: none; /* oculto en escritorio */
+  position: fixed;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 50;
+  background-color: var(--bg-secundario);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-sm);
+  width: 44px;
+  height: 44px;
+  font-size: 1.3rem;
+  color: var(--texto-primario);
+}
+
+/* =========================================================
+   RESPONSIVE — TABLET (pantallas medianas)
+   ========================================================= */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 240px;
+    min-width: 240px;
+    padding: 2rem 1rem;
+  }
+
+  .contenido {
+    padding: 2.5rem;
+  }
+
+  .titulo-grande {
+    font-size: 1.8rem;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — CELULAR
+   El sidebar se convierte en un panel que se desliza desde
+   la izquierda, oculto por default y visible con la clase
+   ".abierto" (la pondrá el JavaScript al tocar la hamburguesa).
+   ========================================================= */
+@media (max-width: 768px) {
+  body {
+    overflow: visible;
+  }
+
+  .boton-hamburguesa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    min-width: 260px;
+    transform: translateX(-100%); /* oculto fuera de pantalla a la izquierda */
+    transition: transform var(--transicion);
+    z-index: 40;
+  }
+
+  .sidebar.abierto {
+    transform: translateX(0); /* se desliza a su posición visible */
+  }
+
+  .contenido {
+    width: 100%;
+    height: 100vh;
+    padding: 5rem 1.5rem 2rem;
+  }
+
+  .titulo-grande {
+    font-size: 1.5rem;
+  }
+
+  .grid-proyectos {
+    grid-template-columns: 1fr; /* una sola columna en celular */
+  }
+
+  /* Fondo oscuro detrás del sidebar cuando está abierto en móvil */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 30;
+  }
+
+  .overlay.activo {
+    display: block;
+  }
+}
+/* =========================================================
+   LIGHTBOX v3 — imagen pequeña centrada con X visible
+   ========================================================= */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.lightbox.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-contenido {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lightbox-img {
+  width: 480px;
+  max-width: 70vw;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  transition: opacity 0.2s ease;
+}
+
+.lightbox-img.desvaneciendo {
+  opacity: 0;
+}
+
+/* X de cerrar — esquina superior derecha de la imagen */
+.lightbox-cerrar {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--acento);
+  color: #04342C;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #04342C;
+  transition: transform 0.2s ease;
+  z-index: 10;
+}
+
+.lightbox-cerrar:hover {
+  transform: scale(1.15);
+}
+
+/* Flechas */
+.lightbox-flecha {
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.lightbox-flecha:hover {
+  background-color: var(--acento);
+  color: #04342C;
+}
+
+/* Contador */
+.lightbox-contador {
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+/* Cursor zoom en imágenes */
+.proyecto-img-wrapper {
+  cursor: zoom-in;
+}
+/* =========================================================
+   3. BARRA DE PROGRESO DE SCROLL
+   Línea cian finita en la parte superior que se llena
+   mientras el usuario hace scroll en el panel de contenido.
+   ========================================================= */
+.barra-progreso {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--acento), var(--acento-claro));
+  z-index: 999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px var(--acento);
+}
+
+/* =========================================================
+   4. TOOLTIPS EN TAGS DE TECNOLOGÍAS
+   Al pasar el mouse sobre un tag de proyecto aparece
+   una burbujita con descripción corta de la tecnología.
+   ========================================================= */
+.proyecto-tags li {
+  position: relative;
+}
+
+.proyecto-tags li[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  background-color: var(--bg-primario);
+  border: 1px solid var(--borde);
+  color: var(--texto-primario);
+  font-size: 0.72rem;
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--radio-sm);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.proyecto-tags li[data-tooltip]::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--borde);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 50;
+}
+
+.proyecto-tags li[data-tooltip]:hover::after,
+.proyecto-tags li[data-tooltip]:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* =========================================================
+   7. GLOW EN HOVER DE BOTONES DE PROYECTO
+   Sombra cian difusa que aparece al pasar el mouse.
+   ========================================================= */
+.boton-proyecto {
+  transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.boton-proyecto:hover {
+  box-shadow: 0 0 18px rgba(0, 217, 200, 0.5);
+  transform: translateY(-2px);
+}
+
+.boton-cv {
+  transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, color 0.25s ease;
+}
+
+.boton-cv:hover {
+  box-shadow: 0 0 16px rgba(0, 217, 200, 0.4);
+  transform: translateY(-2px);
+}
+/* Las tarjetas de porcentaje duplicadas se reemplazaron por
+   las tarjetas categorizadas en css/habilidades.css */
+
+/* =========================================================
+   EFECTOS VISUALES v2
+   ========================================================= */
+
+
+
+/* Estado visible cuando el grid tiene clase "animar" */
+.grid-proyectos.animar .tarjeta-proyecto:nth-child(1) {
+  animation: subirTarjeta 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.05s;
+}
+.grid-proyectos.animar .tarjeta-proyecto:nth-child(2) {
+  animation: subirTarjeta 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.2s;
+}
+.grid-proyectos.animar .tarjeta-proyecto:nth-child(3) {
+  animation: subirTarjeta 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.35s;
+}
+
+@keyframes subirTarjeta {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* (El indicador de "activo" ahora es la píldora deslizante — ver css/nav-pill.css) */
+
+/* 4. SHIMMER EN BOTÓN DE GITHUB */
+.boton-proyecto {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.boton-proyecto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  animation: shimmerBtn 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmerBtn {
+  0%   { background-position: 200% center; }
+  50%  { background-position: -200% center; }
+  100% { background-position: -200% center; }
+}
+
+/* 5. HOVER 3D — preparación */
+.grid-proyectos {
+  perspective: 1200px;
+}
+
+.tarjeta-proyecto {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+/* =========================================================
+   PROYECTOS — DISEÑO CON TABS EXPANDIBLES
+   ========================================================= */
+
+/* Fila de tabs (tarjetas compactas selectoras) */
+.proyectos-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0;
+}
+
+.proyecto-tab {
+  position: relative;
+  width: 200px;
+  height: 130px;
+  border-radius: var(--radio-lg);
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid var(--borde);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.proyecto-tab:hover {
+  border-color: var(--acento);
+}
+
+.proyecto-tab.activo {
+  border-color: var(--acento);
+  box-shadow: 0 0 20px rgba(0, 217, 200, 0.3);
+}
+
+.tab-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay oscuro con nombre y número */
+.tab-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 40%, transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.75rem;
+  gap: 0.15rem;
+}
+
+.tab-numero {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--acento);
+  letter-spacing: 2px;
+}
+
+.tab-nombre {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  text-align: left;
+}
+
+/* Panel expandible */
+.proyecto-panel {
+  display: flex;
+  gap: 2rem;
+  background: rgba(22, 27, 34, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 217, 200, 0.2);
+  border-radius: 0 var(--radio-lg) var(--radio-lg) var(--radio-lg);
+  padding: 1.75rem;
+  margin-top: 0;
+  animation: abrirPanel 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  max-width: 750px;
+}
+
+.proyecto-panel.oculto {
+  display: none;
+}
+
+@keyframes abrirPanel {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.panel-imagenes {
+  flex-shrink: 0;
+  width: 220px;
+}
+
+.panel-imagenes .proyecto-img-wrapper {
+  border-radius: var(--radio-md);
+  overflow: hidden;
+  height: 140px;
+}
+
+.panel-imagenes .proyecto-img {
+  height: 140px;
+}
+
+.panel-info {
+  flex: 1;
+}
+
+/* Indicador de tab activo conectado al panel */
+.proyecto-tab.activo::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--bg-primario);
+  z-index: 10;
+}

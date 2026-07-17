@@ -1,0 +1,46 @@
+/* =========================================================
+   PÍLDORA DESLIZANTE — indicador del link activo
+   En vez de que el resaltado "salte" de un link a otro, un
+   único bloque de color se desliza suavemente hasta la
+   posición del link activo. Lo posiciona js/nav-pill.js
+   calculando la posición real de cada link.
+   ========================================================= */
+
+.sidebar-nav ul {
+  position: relative; /* la píldora se ubica respecto a este contenedor */
+}
+
+.nav-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-radius: var(--radio-md);
+  background: linear-gradient(120deg, var(--acento), var(--acento-claro));
+  box-shadow: 0 8px 20px -8px rgba(0, 217, 200, 0.55);
+  z-index: 0;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), height 0.3s ease, opacity 0.2s ease;
+  opacity: 0; /* aparece solo cuando ya calculamos su posición real, evita el "salto" inicial */
+}
+
+.nav-pill.lista {
+  opacity: 1;
+}
+
+/* El texto/ícono del link debe quedar POR ENCIMA de la píldora */
+.nav-link {
+  position: relative;
+  z-index: 1;
+}
+
+/* En modo colapsado los links quedan centrados (solo ícono); la píldora igual los sigue */
+.sidebar.colapsado .nav-pill {
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-pill {
+    transition: opacity 0.2s ease;
+  }
+}

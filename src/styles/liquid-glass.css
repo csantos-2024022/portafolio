@@ -1,0 +1,114 @@
+/* =========================================================
+   LIQUID GLASS — sidebar completo
+   Inspirado en el lenguaje visual "Liquid Glass" (vidrio
+   grueso, refractivo, con brillo especular que reacciona a
+   la luz/mouse). Se logra apilando varias capas:
+   1) un highlight que simula la luz pegando arriba-izquierda
+   2) un tinte de color que "roba" del fondo aurora
+   3) blur + saturación fuerte (el vidrio real satura lo que
+      hay detrás)
+   4) bordes con luz (arriba clara, abajo oscura = curvatura)
+   Se carga DESPUÉS de styles.css y nav-pill.css a propósito,
+   para poder sobreescribir esos fondos planos.
+   ========================================================= */
+
+.sidebar {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+html[data-tema='claro'] .sidebar {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -18px 30px -28px rgba(0, 0, 0, 0.12),
+    0 25px 50px -28px rgba(20, 24, 31, 0.22);
+}
+
+/* Brillo especular que sigue al mouse — lo actualiza js/liquid-glass.js */
+.sidebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    340px circle at var(--luz-x, 30%) var(--luz-y, 10%),
+    rgba(255, 255, 255, 0.16),
+    transparent 60%
+  );
+  transition: opacity 0.3s ease;
+}
+
+/* El brillo tiene pointer-events:none, así que no bloquea clicks aunque
+   quede pintado por encima de algún elemento — es solo un efecto visual. */
+
+/* =========================================================
+   BOTONES "GOTA DE VIDRIO" — colapsar, tema, sonido, idioma
+   ========================================================= */
+.boton-colapsar,
+.boton-tema,
+.boton-sonido,
+.boton-idioma {
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.01) 65%);
+  backdrop-filter: blur(14px) saturate(220%);
+  -webkit-backdrop-filter: blur(14px) saturate(220%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.12),
+    0 8px 16px -10px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.boton-colapsar:hover,
+.boton-tema:hover,
+.boton-sonido:hover,
+.boton-idioma:hover {
+  background: linear-gradient(155deg, rgba(0, 217, 200, 0.35), rgba(255, 255, 255, 0.06) 65%);
+}
+
+/* "Squish" líquido al presionar — lo activa js/liquid-glass.js */
+.boton-colapsar.presionado,
+.boton-tema.presionado,
+.boton-sonido.presionado,
+.boton-idioma.presionado {
+  transform: scale(0.88);
+}
+
+/* =========================================================
+   PÍLDORA — ahora también vidrio, no color plano
+   ========================================================= */
+.nav-pill {
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.5), rgba(0, 217, 200, 0.35) 55%, rgba(0, 217, 200, 0.22));
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.65),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.12),
+    0 10px 22px -10px rgba(0, 217, 200, 0.55);
+}
+
+/* Links en reposo: leve vidrio propio, para que se note que TODO el menú es líquido, no solo el activo */
+.nav-link {
+  background: transparent;
+  transition: background-color var(--transicion), color var(--transicion), padding-left var(--transicion), transform 0.15s ease;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-link:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boton-colapsar, .boton-tema, .boton-sonido, .boton-idioma, .nav-link {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}

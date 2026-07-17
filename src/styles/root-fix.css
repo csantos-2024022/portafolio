@@ -1,0 +1,23 @@
+/* =========================================================
+   FIX ESTRUCTURAL — no es un cambio de diseño.
+
+   El CSS original (styles.css) espera que .sidebar y .contenido
+   sean hijos DIRECTOS de <body>, porque body tiene:
+     body { display: flex; overflow: hidden; }
+
+   Pero React/Vite renderiza todo dentro de un <div id="root">
+   que se mete entre <body> y nuestros componentes. Ese div, al
+   no ser "display: flex", rompe el layout de dos columnas: en
+   vez de quedar el sidebar a la izquierda y el contenido a la
+   derecha, terminan apilados uno debajo del otro (por eso el
+   contenido "desaparecía": no estaba oculto, estaba renderizado
+   muy por debajo de lo visible).
+
+   "display: contents" hace que #root no genere una caja propia
+   en el layout: sus hijos (Sidebar, Contenido, etc.) pasan a
+   comportarse como si fueran hijos directos de <body>, que es
+   exactamente lo que el CSS original espera.
+   ========================================================= */
+#root {
+  display: contents;
+}
