@@ -41,10 +41,9 @@ export const proyectosPaneles = {
   },
   restaurante: {
     imagenes: [
-      { src: '/assets/img/restaurante-movil-1.png', alt: 'App restaurante móvil - captura 1' },
-      { src: '/assets/img/restaurante-movil-2.png', alt: 'App restaurante móvil - captura 2' },
+      { src: '/assets/img/restaurante-movil-1.jpeg', alt: 'App restaurante móvil - captura 1' },
     ],
-    imgPrincipal: '/assets/img/restaurante-movil-1.png',
+    imgPrincipal: '/assets/img/restaurante-movil-1.jpeg',
     altPrincipal: 'App restaurante móvil',
     video: null,
     titulo: 'Restaurant Management System',
