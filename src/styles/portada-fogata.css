@@ -1,0 +1,181 @@
+/* =========================================================
+   HERO DE FOGATA — bloque normal al inicio de "Sobre mí"
+   A propósito NO es position:fixed. Es un <div> más dentro del
+   flujo normal del documento, con la altura de una pantalla.
+   Por eso el scroll SIEMPRE funciona: al bajar, el navegador
+   simplemente lo deja atrás, como con cualquier otro contenido.
+   Se estira más allá del padding de ".contenido" con márgenes
+   negativos para que se vea a todo lo ancho del panel.
+   ========================================================= */
+.portada-fogata {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  width: calc(100% + 8rem);
+  margin: -3rem -4rem 2.5rem;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 460px;
+  background: radial-gradient(ellipse 75% 55% at 50% 82%, #3a1204 0%, #180702 42%, #07030a 74%, #030208 100%);
+}
+
+/* --------- Resplandor: "brasas" grandes y difusas que titilan --------- */
+.portada-fogata-resplandor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.brasa {
+  position: absolute;
+  bottom: -12%;
+  left: 50%;
+  border-radius: 50%;
+  filter: blur(70px);
+  mix-blend-mode: screen;
+}
+
+.brasa-1 {
+  width: 46vw;
+  height: 46vw;
+  max-width: 620px;
+  max-height: 620px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(255, 140, 40, 0.85) 0%, rgba(255, 90, 20, 0.35) 55%, transparent 75%);
+  animation: parpadeoFuego1 2.4s ease-in-out infinite;
+}
+
+.brasa-2 {
+  width: 24vw;
+  height: 24vw;
+  max-width: 340px;
+  max-height: 340px;
+  left: calc(50% - 9vw);
+  background: radial-gradient(circle, rgba(255, 200, 90, 0.9) 0%, rgba(255, 120, 30, 0.3) 60%, transparent 78%);
+  animation: parpadeoFuego2 1.7s ease-in-out infinite;
+}
+
+.brasa-3 {
+  width: 24vw;
+  height: 24vw;
+  max-width: 320px;
+  max-height: 320px;
+  left: calc(50% + 10vw);
+  background: radial-gradient(circle, rgba(255, 170, 60, 0.85) 0%, rgba(255, 80, 20, 0.28) 58%, transparent 78%);
+  animation: parpadeoFuego3 2s ease-in-out infinite;
+}
+
+@keyframes parpadeoFuego1 {
+  0%, 100% { opacity: 0.75; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 1;    transform: translateX(-50%) scale(1.08); }
+}
+
+@keyframes parpadeoFuego2 {
+  0%, 100%  { opacity: 0.6;  transform: scale(0.95) translateY(0); }
+  45%       { opacity: 0.95; transform: scale(1.1) translateY(-6px); }
+}
+
+@keyframes parpadeoFuego3 {
+  0%, 100%  { opacity: 0.65; transform: scale(1) translateY(0); }
+  55%       { opacity: 1;    transform: scale(0.92) translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brasa-1, .brasa-2, .brasa-3 { animation: none; }
+}
+
+/* --------- Chispas animadas por JS (canvas) --------- */
+.portada-fogata-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: screen;
+}
+
+/* Viñeta: oscurece los bordes para que el texto siempre contraste */
+.portada-fogata-vineta {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, transparent 30%, transparent 62%, rgba(0, 0, 0, 0.72) 100%),
+    radial-gradient(ellipse 85% 65% at 50% 45%, transparent 45%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+/* Nombre — discreto, no protagonista */
+.portada-fogata-texto {
+  position: absolute;
+  left: 50%;
+  bottom: 9%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.portada-fogata-kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 214, 170, 0.75);
+  font-weight: 500;
+}
+
+.portada-fogata-nombre {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #fdf3e8;
+  text-shadow: 0 0 18px rgba(255, 150, 60, 0.5);
+  letter-spacing: 0.04em;
+}
+
+/* Pista de "hay más abajo" */
+.portada-fogata-scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 3%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+}
+
+.portada-fogata-flecha {
+  animation: portadaRebote 1.8s ease-in-out infinite;
+}
+
+@keyframes portadaRebote {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50%      { transform: translateY(6px); opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portada-fogata-flecha { animation: none; }
+}
+
+/* --------- Responsive: los márgenes negativos deben calzar con el
+   padding de .contenido en cada breakpoint (ver styles.css) --------- */
+@media (max-width: 1024px) {
+  .portada-fogata {
+    width: calc(100% + 5rem);
+    margin: -2.5rem -2.5rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .portada-fogata {
+    width: calc(100% + 3rem);
+    margin: -5rem -1.5rem 2rem;
+  }
+
+  .portada-fogata-nombre { font-size: 1rem; }
+  .portada-fogata-scroll { display: none; }
+}

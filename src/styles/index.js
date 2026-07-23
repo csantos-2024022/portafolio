@@ -14,6 +14,8 @@ import './liquid-glass.css';
 import './habilidades.css';
 /* Rediseño de Sobre mí: chips, bento grid, tarjetas de idiomas */
 import './sobre-mi.css';
+/* Portada de fogata a pantalla completa */
+import './fogata-intro.css';
 
 /* Nota: agua-sidebar.css y galeria.css existen en el proyecto original
    pero NO estaban enlazados en el <head> del index.html (ni su galeria.js

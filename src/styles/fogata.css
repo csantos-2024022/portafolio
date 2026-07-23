@@ -1,0 +1,73 @@
+/* =========================================================
+   FOGATA DE FONDO — sección "Sobre mí"
+   El video se funde con el fondo oscuro del sitio usando
+   mix-blend-mode: screen (el negro del video se vuelve
+   invisible, solo quedan las llamas brillando). Un overlay
+   radial oscurece los bordes para que el texto siga siendo
+   perfectamente legible encima.
+   ========================================================= */
+
+.hero-fogata {
+  position: relative;
+  padding: 1.5rem 0 2rem;
+  border-radius: var(--radio-lg);
+  overflow: hidden;
+  isolation: isolate; /* evita que el blend-mode "se escape" y afecte otras cosas del sitio */
+}
+
+.fogata-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 140%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  z-index: 0;
+  mix-blend-mode: screen;
+  opacity: 0.75;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+/* Mientras la sección está fuera de vista, se atenúa (la controla useFogata) */
+.hero-fogata.fogata-atenuada .fogata-video {
+  opacity: 0.18;
+}
+
+/* Oscurece los bordes para que el texto tenga contraste garantizado */
+.fogata-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 35%, transparent 0%, rgba(13, 17, 23, 0.35) 70%, var(--bg-primario) 100%);
+}
+
+html[data-tema='claro'] .fogata-overlay {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 35%, transparent 0%, rgba(247, 248, 250, 0.55) 70%, var(--bg-primario) 100%);
+}
+
+/* Todo el contenido real (título, frase, chips) va por encima del video y su overlay */
+.hero-fogata > *:not(.fogata-video):not(.fogata-overlay) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Quienes prefieren menos movimiento ven solo el frame fijo (poster), sin reproducir */
+@media (prefers-reduced-motion: reduce) {
+  .fogata-video {
+    opacity: 0.4;
+  }
+}
+
+/* En pantallas muy angostas, un poco menos protagonismo para no tapar el texto */
+@media (max-width: 500px) {
+  .fogata-video {
+    opacity: 0.5;
+  }
+}

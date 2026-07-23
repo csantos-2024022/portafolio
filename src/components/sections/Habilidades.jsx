@@ -80,6 +80,18 @@ export default function Habilidades() {
           </div>
         ))}
 
+        <div className="bloque-aprendiendo">
+          <h3 className="categoria-titulo">{t('subtitulo_aprendiendo')}</h3>
+          <p className="parrafo-aprendiendo">{t('parrafo_aprendiendo')}</p>
+          <div className="grid-aprendiendo">
+            {aprendiendo.map((item) => (
+              <div className="chip-aprendiendo" key={item.nombre}>
+                <span>{item.emoji}</span>
+                {item.nombre}
+              </div>
+            ))}
+          </div>
+        </div>
 
       </div>
     </>

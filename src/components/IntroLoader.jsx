@@ -27,7 +27,7 @@ function tonoSuave(frecuencia) {
     vol.connect(ctx.destination);
     osc.start();
     osc.stop(ctx.currentTime + 0.12);
-  } catch (e) {
+  } catch {
     /* si el navegador bloquea audio sin interacción, seguimos sin sonido */
   }
 }

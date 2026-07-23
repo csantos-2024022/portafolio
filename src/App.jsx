@@ -8,6 +8,7 @@ import Contenido from './components/Contenido';
 import SourceCodeOverlay from './components/SourceCodeOverlay';
 import Lightbox from './components/Lightbox';
 import IntroLoader from './components/IntroLoader';
+import FogataIntro from './components/FogataIntro';
 
 function Layout() {
   useCustomCursor();
@@ -21,6 +22,7 @@ function Layout() {
       <Contenido />
       <SourceCodeOverlay />
       <Lightbox />
+      <FogataIntro />
       <IntroLoader />
     </>
   );

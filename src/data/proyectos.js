@@ -23,15 +23,15 @@ export const proyectosTabs = [
 export const proyectosPaneles = {
   banco: {
     imagenes: [
-      { src: '/assets/img/Banco3.jpeg', alt: 'App banco móvil - captura 1' },
+      { src: '/assets/img/banco3.jpeg', alt: 'App banco móvil - captura 1' },
       { src: '/assets/img/Banco1.jpeg', alt: 'App banco móvil - captura 2' },
-      { src: '/assets/img/Banco2.jpeg', alt: 'App banco móvil - captura 3' },
+      { src: '/assets/img/banco2.jpeg', alt: 'App banco móvil - captura 3' },
     ],
     imgPrincipal: '/assets/img/Banco1.jpeg',
     altPrincipal: 'App banco móvil',
     video: {
       src: '/assets/img/videoBanco.mp4',
-      poster: '/assets/img/banco-movil-1.png',
+      poster: '/assets/img/Banco1.jpeg',
     },
     titulo: 'Bank Management System',
     descripcion:

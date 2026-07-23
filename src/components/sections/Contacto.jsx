@@ -37,7 +37,7 @@ export default function Contacto() {
       } else {
         throw new Error('Respuesta no exitosa');
       }
-    } catch (error) {
+    } catch {
       setEstado({ mensaje: t('form_error'), color: '#E24B4A' });
     } finally {
       setEnviando(false);

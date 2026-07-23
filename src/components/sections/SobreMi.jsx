@@ -131,7 +131,10 @@ export default function SobreMi() {
         </div>
       </div>
 
-      
+      <div className="tarjeta-contador">
+        <span className="contador-numero">{contador}</span>
+        <span className="contador-texto" data-i18n="contador_texto">{t('contador_texto')}</span>
+      </div>
     </>
   );
 }
